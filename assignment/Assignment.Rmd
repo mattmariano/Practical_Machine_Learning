@@ -52,7 +52,7 @@ The number of folds chosen is 3. Although this is small choosing a larger size d
 3. read the training and test sets
 4. create a model using the train function
 
-```{r, echo=FALSE}
+```{r}
 library(caret)
 library(ggplot2)
 
@@ -91,7 +91,7 @@ test2=test[,c("roll_belt", "pitch_belt", "yaw_belt", "total_accel_belt",
 Define a trainControl function for the train function.
 This allows cross validation to be specified and the number of folds. 
 Verbose just prints a line to the console for processing each fold.
-```{r, echo=FALSE}
+```{r}
 #train2=createSample(train2)
 tc <- trainControl(method = "cv", number = 3,  verboseIter = TRUE)
 model <- train(classe ~ ., data = train2,  method="rf", trControl = tc)

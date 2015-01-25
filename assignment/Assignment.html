@@ -86,11 +86,47 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <li>read the training and test sets</li>
 <li>create a model using the train function</li>
 </ol>
+<pre class="r"><code>library(caret)</code></pre>
 <pre><code>## Loading required package: lattice
-## Loading required package: ggplot2
-## randomForest 4.6-10
+## Loading required package: ggplot2</code></pre>
+<pre class="r"><code>library(ggplot2)
+
+library(randomForest)</code></pre>
+<pre><code>## randomForest 4.6-10
 ## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre class="r"><code>source(file=&quot;Utils.R&quot;)
+set.seed(1234)
+
+train &lt;- read.csv(&quot;./data/pml-training.csv&quot;, header = TRUE, na.strings = c('', 'NA','#DIV/0!'))
+test &lt;- read.csv(&quot;./data/pml-testing.csv&quot;, header = TRUE, na.strings = c('', 'NA','#DIV/0!'))
+
+train2=train[,c(&quot;roll_belt&quot;, &quot;pitch_belt&quot;, &quot;yaw_belt&quot;, &quot;total_accel_belt&quot;, 
+ &quot;gyros_belt_x&quot;, &quot;gyros_belt_y&quot;, &quot;gyros_belt_z&quot;, &quot;accel_belt_x&quot;, &quot;accel_belt_y&quot;, 
+ &quot;accel_belt_z&quot;, &quot;magnet_belt_x&quot;, &quot;magnet_belt_y&quot;, &quot;magnet_belt_z&quot;, &quot;roll_arm&quot;, &quot;pitch_arm&quot;, 
+ &quot;yaw_arm&quot;, &quot;total_accel_arm&quot;, &quot;gyros_arm_x&quot;, &quot;gyros_arm_y&quot;, &quot;gyros_arm_z&quot;, &quot;accel_arm_x&quot;, 
+ &quot;accel_arm_y&quot;, &quot;accel_arm_z&quot;, &quot;magnet_arm_x&quot;, &quot;magnet_arm_y&quot;, &quot;magnet_arm_z&quot;, 
+ &quot;roll_dumbbell&quot;, &quot;pitch_dumbbell&quot;, &quot;yaw_dumbbell&quot;, &quot;total_accel_dumbbell&quot;, &quot;gyros_dumbbell_x&quot;, 
+ &quot;gyros_dumbbell_y&quot;, &quot;gyros_dumbbell_z&quot;, &quot;accel_dumbbell_x&quot;, &quot;accel_dumbbell_y&quot;, &quot;accel_dumbbell_z&quot;, 
+ &quot;magnet_dumbbell_x&quot;, &quot;magnet_dumbbell_y&quot;, &quot;magnet_dumbbell_z&quot;, &quot;roll_forearm&quot;, &quot;pitch_forearm&quot;, 
+ &quot;yaw_forearm&quot;, &quot;total_accel_forearm&quot;, &quot;gyros_forearm_x&quot;, &quot;gyros_forearm_y&quot;, &quot;gyros_forearm_z&quot;, 
+ &quot;accel_forearm_x&quot;, &quot;accel_forearm_y&quot;, &quot;accel_forearm_z&quot;, &quot;magnet_forearm_x&quot;, &quot;magnet_forearm_y&quot;, 
+ &quot;magnet_forearm_z&quot;,&quot;classe&quot;)]
+
+test2=test[,c(&quot;roll_belt&quot;, &quot;pitch_belt&quot;, &quot;yaw_belt&quot;, &quot;total_accel_belt&quot;, 
+ &quot;gyros_belt_x&quot;, &quot;gyros_belt_y&quot;, &quot;gyros_belt_z&quot;, &quot;accel_belt_x&quot;, &quot;accel_belt_y&quot;, 
+ &quot;accel_belt_z&quot;, &quot;magnet_belt_x&quot;, &quot;magnet_belt_y&quot;, &quot;magnet_belt_z&quot;, &quot;roll_arm&quot;, &quot;pitch_arm&quot;, 
+ &quot;yaw_arm&quot;, &quot;total_accel_arm&quot;, &quot;gyros_arm_x&quot;, &quot;gyros_arm_y&quot;, &quot;gyros_arm_z&quot;, &quot;accel_arm_x&quot;, 
+ &quot;accel_arm_y&quot;, &quot;accel_arm_z&quot;, &quot;magnet_arm_x&quot;, &quot;magnet_arm_y&quot;, &quot;magnet_arm_z&quot;, 
+ &quot;roll_dumbbell&quot;, &quot;pitch_dumbbell&quot;, &quot;yaw_dumbbell&quot;, &quot;total_accel_dumbbell&quot;, &quot;gyros_dumbbell_x&quot;, 
+ &quot;gyros_dumbbell_y&quot;, &quot;gyros_dumbbell_z&quot;, &quot;accel_dumbbell_x&quot;, &quot;accel_dumbbell_y&quot;, &quot;accel_dumbbell_z&quot;, 
+ &quot;magnet_dumbbell_x&quot;, &quot;magnet_dumbbell_y&quot;, &quot;magnet_dumbbell_z&quot;, &quot;roll_forearm&quot;, &quot;pitch_forearm&quot;, 
+ &quot;yaw_forearm&quot;, &quot;total_accel_forearm&quot;, &quot;gyros_forearm_x&quot;, &quot;gyros_forearm_y&quot;, &quot;gyros_forearm_z&quot;, 
+ &quot;accel_forearm_x&quot;, &quot;accel_forearm_y&quot;, &quot;accel_forearm_z&quot;, &quot;magnet_forearm_x&quot;, &quot;magnet_forearm_y&quot;, 
+ &quot;magnet_forearm_z&quot;)]</code></pre>
 <p>Define a trainControl function for the train function. This allows cross validation to be specified and the number of folds. Verbose just prints a line to the console for processing each fold.</p>
+<pre class="r"><code>#train2=createSample(train2)
+tc &lt;- trainControl(method = &quot;cv&quot;, number = 3,  verboseIter = TRUE)
+model &lt;- train(classe ~ ., data = train2,  method=&quot;rf&quot;, trControl = tc)</code></pre>
 <pre><code>## + Fold1: mtry= 2 
 ## - Fold1: mtry= 2 
 ## + Fold1: mtry=27 
