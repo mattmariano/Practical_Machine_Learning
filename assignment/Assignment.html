@@ -124,7 +124,7 @@ test2=test[,c(&quot;roll_belt&quot;, &quot;pitch_belt&quot;, &quot;yaw_belt&quot
  &quot;accel_forearm_x&quot;, &quot;accel_forearm_y&quot;, &quot;accel_forearm_z&quot;, &quot;magnet_forearm_x&quot;, &quot;magnet_forearm_y&quot;, 
  &quot;magnet_forearm_z&quot;)]</code></pre>
 <p>Define a trainControl function for the train function. This allows cross validation to be specified and the number of folds. Verbose just prints a line to the console for processing each fold.</p>
-<pre class="r"><code>#train2=createSample(train2)
+<pre class="r"><code># 
 tc &lt;- trainControl(method = &quot;cv&quot;, number = 3,  verboseIter = TRUE)
 model &lt;- train(classe ~ ., data = train2,  method=&quot;rf&quot;, trControl = tc)</code></pre>
 <pre><code>## + Fold1: mtry= 2 
